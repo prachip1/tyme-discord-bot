@@ -4,7 +4,13 @@ require('dotenv').config();
 
 console.log('Starting bot...');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent] });
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
+    ] 
+});
 
 client.once('ready', () => {
     console.log('Bot is online!');
@@ -37,7 +43,6 @@ client.on('messageCreate', async message => {
     }
 });
 
-// Note: DISCORD_TOKEN should be your bot's token, not the application ID
 client.login(process.env.DISCORD_TOKEN).catch(error => {
     console.error('Failed to log in:', error);
 });
@@ -46,7 +51,6 @@ process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });
 
-// Keep the process running
 process.on('exit', code => {
     console.log(`About to exit with code: ${code}`);
 });
