@@ -2,6 +2,8 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const axios = require('axios');
 require('dotenv').config();
 
+console.log('Starting bot...');
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent] });
 
 client.once('ready', () => {
@@ -35,6 +37,7 @@ client.on('messageCreate', async message => {
     }
 });
 
+// Note: DISCORD_TOKEN should be your bot's token, not the application ID
 client.login(process.env.DISCORD_TOKEN).catch(error => {
     console.error('Failed to log in:', error);
 });
@@ -42,3 +45,10 @@ client.login(process.env.DISCORD_TOKEN).catch(error => {
 process.on('unhandledRejection', error => {
     console.error('Unhandled promise rejection:', error);
 });
+
+// Keep the process running
+process.on('exit', code => {
+    console.log(`About to exit with code: ${code}`);
+});
+
+console.log('Bot setup complete, attempting to log in...');
