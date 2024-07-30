@@ -22,6 +22,7 @@ client.on('messageCreate', async message => {
     }
     
     if (message.content.startsWith('!timezone')) {
+        console.log('Timezone command detected');
         const args = message.content.split(' ');
         const cityName = args[1];
         
@@ -30,15 +31,19 @@ client.on('messageCreate', async message => {
             return;
         }
         
+        console.log(`Fetching time for city: ${cityName}`);
+        
         try {
             const response = await axios.get(`https://timely-backend-five.vercel.app/api/worldtime`, { params: { city: cityName } });
+            console.log('API response:', response.data);
             const { datetime, day_of_week } = response.data;
             
-            message.channel.send(`The current time in ${cityName} is ${datetime} and it's ${day_of_week}`);
+            console.log(`Sending response: The current time in ${cityName} is ${datetime} and it's ${day_of_week}`);
+            await message.channel.send(`The current time in ${cityName} is ${datetime} and it's ${day_of_week}`);
         } catch (error) {
             console.error('Error fetching time data:', error);
             console.error('Error response:', error.response ? error.response.data : 'No response data');
-            message.channel.send('Error fetching time data. Please try again.');
+            await message.channel.send('Error fetching time data. Please try again.');
         }
     }
 });
